@@ -17,3 +17,15 @@ clean_top10 <- top10 |>
 
 combo <- clean_crash |> 
   left_join(clean_top10, by="date_is")
+
+distract <- combo |> 
+  mutate(distract = Yes/Total)
+
+library(ggplot2)
+ggplot(distract, aes(x=date_is, y=distract)) +
+  geom_point(size=.1) +
+  theme_bw() + 
+  geom_point(data=distract |> filter(!is.na(Album)), colour="red", size=2) +
+  labs(title="Proportion of fatal US accidents involving distracted drivers",
+       subtitle="album release dates in red")
+ggsave(filename="ggsky.jpg", width=2016, height=1134, units="px")
